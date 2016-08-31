@@ -20,7 +20,7 @@ Bu scripti MaestroPanel'e entegre etmek  için lütfen aşağıdaki dokümanı i
 klasörü altına kopyalayın. Bu kadar!
 
 ###Ayarlar
-
+----------
 *cfrun.ps1* dosyasını açarak CloudFlare bilgilerinizi tanıtmanız gerekiyor.
 
 	$AUTH_EMAIL = "ENTER YOUR EMAIL"
@@ -28,22 +28,31 @@ klasörü altına kopyalayın. Bu kadar!
 
 ###Parametreler
 
+cfrun.ps1 PowerShell scriptinin alabileceği parametreler ve açıklamaları aşağıdaki gibidir.
+
 | İsim  | Açıklama  |
 |---|---|
 | action  | Yapılacak işlem ZONE_CREATE, ZONE_DELETE, RECORD_ADD, RECORD_UPDATE, RECORD_DELETE   |
-| domain  | Eklenecek veya işlem yapılacak domain ismi |
+| domain  | Eklenecek veya işlem yapılacak domain ismi. |
 | record_type  |  A, AAAA, CNAME, TXT, SRV, MX, NS, SPF  |
-| record_name  |  DNS Kaydının ismi |
-| record_value  |  DNS kaydının değeri |
+| record_name  |  DNS Kaydının ismi. |
+| record_value  |  DNS kaydının değeri. |
 | record_proto  |  SRV kaydı için protokol değeri. _tpc gibi. |
 | record_target  | SRV kaydı için target domain değeri. FQDN değeri.  |
 | record_priority  | MX veya SRV kaydı için kullanılan priority. Integer.  |
 | record_weight  |  SRV kaydı için weight değeri. Integer. |
 | record_port  |  SRV kaydı için port değeri. Integer. |
 
+Özellikleri;
+
+ - Yeni bir domain ekleyebilir.
+ - Mevcut domain'i silebilir.
+ - Yeni bir DNS kaydı ekleyebilir.
+ - Mevcut DNS kaydını güncelleyebilir. 
+ - Mevcut DNS kaydını silebilir.
+
 ###Örnekler
 ----------
-
 Yeni Domain Eklemek
 
 	.\cfrun.ps1 -action ZONE_CREATE -domain maestropanel.com
@@ -67,6 +76,8 @@ DNS Kaydını Güncellemek
 ###Yazar
 
 Oğuzhan YILMAZ
+
 oguzhan@maestropanel.com
+
 
 
