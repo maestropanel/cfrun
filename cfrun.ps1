@@ -60,6 +60,8 @@ $AUTH_EMAIL = "PLEASE ENTER YOUR CLOUDFLARE EMAIL"
 $AUTH_KEY = "PLEASE ENTER YOUR API KEY"
 $AUTH_HEADER = @{"X-Auth-Email" = $AUTH_EMAIL; "X-Auth-Key" = $AUTH_KEY}
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 function WriteLog($message){
 	if($message -ne ""){
 		Write-EventLog -LogName "Windows PowerShell"  -Source "PowerShell" -EntryType Information -Message $message -EventId 1
