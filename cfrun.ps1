@@ -56,12 +56,14 @@ Param(
 	[int32] $RECORD_PORT=443
 )
 
-$AUTH_EMAIL = "ENTER YOUR EMAIL"
-$AUTH_KEY = "ENTER YOR KEY"
+$AUTH_EMAIL = "PLEASE ENTER YOUR CLOUDFLARE EMAIL"
+$AUTH_KEY = "PLEASE ENTER YOUR API KEY"
 $AUTH_HEADER = @{"X-Auth-Email" = $AUTH_EMAIL; "X-Auth-Key" = $AUTH_KEY}
 
 function WriteLog($message){
-	Write-EventLog -LogName "Windows PowerShell"  -Source "PowerShell"  -EntryType Information -Message $message  -EventId 1
+	if($message -ne ""){
+		Write-EventLog -LogName "Windows PowerShell"  -Source "PowerShell" -EntryType Information -Message $message -EventId 1
+	}
 }
 
 function GetZoneId {
@@ -71,9 +73,7 @@ function GetZoneId {
 	}
 	catch
 	{
-		$result = $_.Exception.Response.GetResponseStream()
-		$reader = New-Object System.IO.StreamReader($result)
-		$responseBody = $reader.ReadToEnd()
+		$responseBody =  $_.Exception.Message
 		
 		WriteLog $responseBody
 		Write-Host $responseBody
@@ -84,6 +84,7 @@ function GetZoneId {
 
 function GetRecordIdByValue {
 	$ZoneId = GetZoneId
+
 	try{
 	
 		$r = Invoke-RestMethod -Method GET -Uri "https://api.cloudflare.com/client/v4/zones/$ZoneId/dns_records?type=$RECORD_TYPE&name=$RECORD_NAME.$DOMAIN&content=$RECORD_VALUE&match=all" -Headers $AUTH_HEADER -ContentType 'application/json'	
@@ -91,9 +92,7 @@ function GetRecordIdByValue {
 	}
 	catch
 	{
-		$result = $_.Exception.Response.GetResponseStream()
-		$reader = New-Object System.IO.StreamReader($result)
-		$responseBody = $reader.ReadToEnd()
+		$responseBody =  $_.Exception.Message
 		
 		WriteLog $responseBody
 		Write-Host $responseBody
@@ -111,9 +110,7 @@ function GetRecordIdByName {
 	}
 	catch
 	{
-		$result = $_.Exception.Response.GetResponseStream()
-		$reader = New-Object System.IO.StreamReader($result)
-		$responseBody = $reader.ReadToEnd()
+		$responseBody =  $_.Exception.Message
 		
 		WriteLog $responseBody
 		Write-Host $responseBody
@@ -125,19 +122,18 @@ function GetRecordIdByName {
 WriteLog "Parameters Action: $ACTION, Domain: $DOMAIN, Type: $RECORD_TYPE, Name: $RECORD_NAME, Value: $RECORD_VALUE"
 
 if($ACTION -eq "ZONE_CREATE"){
+	
 	$responseBody = ""
 	$jsonBody = @{name=$DOMAIN; jump_start=$true} | ConvertTo-Json
 	
 	try{	
+
 		$r = Invoke-RestMethod -Method POST -Uri "https://api.cloudflare.com/client/v4/zones" -Headers $AUTH_HEADER -Body $jsonBody -ContentType 'application/json'
 		$responseBody = $r | Out-String
 	}
 	catch
 	{
-		$result = $_.Exception.Response.GetResponseStream()
-		$reader = New-Object System.IO.StreamReader($result)
-		$responseBody = $reader.ReadToEnd()
-			
+		$responseBody =  $_.Exception.Message
 	}
 
 	WriteLog $responseBody
@@ -155,9 +151,7 @@ if($ACTION -eq "ZONE_DELETE"){
 	}
 	catch
 	{
-		$result = $_.Exception.Response.GetResponseStream()
-		$reader = New-Object System.IO.StreamReader($result)
-		$responseBody = $reader.ReadToEnd()
+		$responseBody =  $_.Exception.Message
 	}
 
 	WriteLog $responseBody
@@ -202,9 +196,7 @@ if($ACTION -eq "RECORD_ADD"){
 	}
 	catch
 	{
-		$result = $_.Exception.Response.GetResponseStream()
-		$reader = New-Object System.IO.StreamReader($result)
-		$responseBody = $reader.ReadToEnd()
+		$responseBody =  $_.Exception.Message
 	}
 
 	WriteLog $responseBody
@@ -233,9 +225,7 @@ if($ACTION -eq "RECORD_UPDATE"){
 	}
 	catch
 	{
-		$result = $_.Exception.Response.GetResponseStream()
-		$reader = New-Object System.IO.StreamReader($result)
-		$responseBody = $reader.ReadToEnd()
+		$responseBody =  $_.Exception.Message
 	}
 	
 	WriteLog $responseBody
@@ -253,16 +243,16 @@ if($ACTION -eq "RECORD_DELETE"){
 	}else{
 		$RecordId = GetRecordIdByValue
 	}
-	
+
 	try{
+	
 		$r = Invoke-RestMethod -Method DELETE -Uri "https://api.cloudflare.com/client/v4/zones/$ZoneId/dns_records/$RecordId" -Headers $AUTH_HEADER -ContentType 'application/json'
-		$responseBody = $r | Out-String
+		$responseBody = $r | Out-String	
+
 	}
 	catch
 	{
-		$result = $_.Exception.Response.GetResponseStream()
-		$reader = New-Object System.IO.StreamReader($result)
-		$responseBody = $reader.ReadToEnd()
+		$responseBody =  $_.Exception.Message
 	}
 
 	WriteLog $responseBody
