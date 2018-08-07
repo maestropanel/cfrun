@@ -6,12 +6,12 @@ Bu scripti MaestroPanel'e entegre etmek  için lütfen aşağıdaki dokümanı i
  - https://wiki.maestropanel.com/maestropanel-cloudflare-script-powershell/
 
 
-###Download
+### Download
 ----------
 
  - https://github.com/maestropanel/cfrun/blob/master/cfrun.ps1
 
-###Kurulum
+### Kurulum
 ----------
 *cfrun.ps1* dosyasını
 
@@ -19,14 +19,14 @@ Bu scripti MaestroPanel'e entegre etmek  için lütfen aşağıdaki dokümanı i
 
 klasörü altına kopyalayın. Bu kadar!
 
-###Ayarlar
+### Ayarlar
 ----------
 *cfrun.ps1* dosyasını açarak CloudFlare bilgilerinizi tanıtmanız gerekiyor.
 
 	$AUTH_EMAIL = "ENTER YOUR EMAIL"
 	$AUTH_KEY = "ENTER YOR KEY"
 
-###Parametreler
+### Parametreler
 
 cfrun.ps1 PowerShell scriptinin alabileceği parametreler ve açıklamaları aşağıdaki gibidir.
 
@@ -51,7 +51,7 @@ cfrun.ps1 PowerShell scriptinin alabileceği parametreler ve açıklamaları aş
  - Mevcut DNS kaydını güncelleyebilir. 
  - Mevcut DNS kaydını silebilir.
 
-###Örnekler
+### Örnekler
 ----------
 Yeni Domain Eklemek
 
@@ -73,7 +73,7 @@ DNS Kaydını Güncellemek
 
 	.\cfrun.ps1 -action RECORD_UPDATE -domain maestropanel.com -record_type CNAME -record_name "smtp" -record_value "mx.google.com"
 
-###Yazar
+### Yazar
 
 Oğuzhan YILMAZ
 
